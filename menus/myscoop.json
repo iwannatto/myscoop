@@ -1,0 +1,26 @@
+{
+  "context-menu": {
+    "atom-text-editor": [
+      {
+        "label": "Toggle myscoop",
+        "command": "myscoop:toggle"
+      }
+    ]
+  },
+  "menu": [
+    {
+      "label": "Packages",
+      "submenu": [
+        {
+          "label": "myscoop",
+          "submenu": [
+            {
+              "label": "Toggle",
+              "command": "myscoop:toggle"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

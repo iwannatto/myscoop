@@ -1,0 +1,18 @@
+{
+  "name": "myscoop",
+  "main": "./lib/myscoop",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "keywords": [
+  ],
+  "activationCommands": {
+    "atom-workspace": "myscoop:toggle"
+  },
+  "repository": "https://github.com/atom/myscoop",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+  }
+}
