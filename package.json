@@ -6,7 +6,7 @@
   "keywords": [
   ],
   "activationCommands": {
-    "atom-workspace": "myscoop:toggle"
+    "atom-workspace": "myscoop:scoop"
   },
   "repository": "https://github.com/atom/myscoop",
   "license": "MIT",
