@@ -1,9 +1,8 @@
 'use babel';
 
-import MyscoopScoop from '../lib/scoop';
+import Scoop from '../lib/scoop';
 
-describe('MyscoopView', () => {
-  it('has one valid test', () => {
-    // expect('life').toBe('easy');
+describe('Scoop', () => {
+  it('has no test', () => {
   });
 });
