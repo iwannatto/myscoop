@@ -1,6 +1,6 @@
 'use babel';
 
-import Myscoop from '../lib/myscoop';
+import Myscoop from '../lib/main';
 
 // Use the command `window:run-package-specs` (cmd-alt-ctrl-p) to run specs.
 //

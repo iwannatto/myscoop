@@ -1,6 +1,6 @@
 {
   "name": "myscoop",
-  "main": "./lib/myscoop",
+  "main": "./lib/main",
   "version": "0.0.0",
   "description": "A short description of your package",
   "keywords": [
