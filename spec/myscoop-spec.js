@@ -16,16 +16,20 @@ describe('Myscoop', () => {
   });
 
   describe('when the myscoop:scoop event is triggered and active editor is .c', () => {
+    let sourceEditor;
+    let sourceFileName = __dirname + '/testcase/test1.c';
+    let scoopFileName = __dirname + '/testcase/test1_scoop.c';
+
     beforeEach(() => {
       waitsForPromise(() => {
-        return atom.workspace.open(__dirname + '/testcase/test1.c');
+        return atom.workspace.open(sourceFileName).then((editor) => { sourceEditor = editor; });
       });
     });
 
     it('opens new editor in new right pain if active editor is .c', () => {
       // Before the toggle command, scoop editor does not exist
       for (let item of atom.workspace.getPaneItems()) {
-        expect(item.getPath()).not.toBe(__dirname + '/testcase/test1_scoop.c');
+        expect(item.getPath()).not.toBe(scoopFileName);
       }
 
       // This is an activation event, triggering it will cause the package to be
@@ -38,10 +42,28 @@ describe('Myscoop', () => {
       runs(() => {
         // There exists test1_scoop.c
         waitsFor(() =>
-          atom.workspace.getActivePaneItem().getPath() === __dirname + '/testcase/test1_scoop.c'
+          atom.workspace.getActivePaneItem().getPath() === scoopFileName
         );
         runs(() => { expect(true).toBe(true); });
       });
+    });
+
+    it('copies selected line to scoop editor', () => {
+      expect(sourceEditor.getPath()).toBe(sourceFileName);
+      sourceEditor.setCursorBufferPosition([1, 0]);
+      atom.commands.dispatch(workspaceElement, 'myscoop:scoop');
+      waitsForPromise(() => {
+        return activationPromise;
+      });
+      runs(() => {
+        waitsFor(() =>
+          atom.workspace.getActivePaneItem().getPath() === scoopFileName
+        );
+        runs(() => {
+          let scoopEditor = atom.workspace.getActiveTextEditor();
+          expect(scoopEditor.lineTextForBufferRow(1)).toBe('  return 0;');
+        });
+      })
     });
 
     // TODO:
