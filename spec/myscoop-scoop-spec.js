@@ -1,6 +1,6 @@
 'use babel';
 
-import MyscoopView from '../lib/myscoop-view';
+import MyscoopScoop from '../lib/myscoop-scoop';
 
 describe('MyscoopView', () => {
   it('has one valid test', () => {

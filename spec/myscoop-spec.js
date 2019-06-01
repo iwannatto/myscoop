@@ -15,32 +15,32 @@ describe('Myscoop', () => {
     activationPromise = atom.packages.activatePackage('myscoop');
   });
 
-  describe('when the myscoop:toggle event is triggered', () => {
-    it('opens new editor in new right pain if active editor is .c', () => {
+  describe('when the myscoop:scoop event is triggered and active editor is .c', () => {
+    beforeEach(() => {
       waitsForPromise(() => {
-        return atom.workspace.open('sample.c');
+        return atom.workspace.open(__dirname + '/testcase/test1.c');
+      });
+    });
+
+    it('opens new editor in new right pain if active editor is .c', () => {
+      // Before the toggle command, scoop editor does not exist
+      for (let item of atom.workspace.getPaneItems()) {
+        expect(item.getPath()).not.toBe(__dirname + '/testcase/test1_scoop.c');
+      }
+
+      // This is an activation event, triggering it will cause the package to be
+      // activated.
+      atom.commands.dispatch(workspaceElement, 'myscoop:scoop');
+      waitsForPromise(() => {
+        return activationPromise;
       });
 
       runs(() => {
-        // Before the toggle command, scoop editor does not exist
-        for (let item of atom.workspace.getPaneItems()) {
-          expect(item.getTitle()).not.toBe('sample_scoop.c');
-        }
-
-        // This is an activation event, triggering it will cause the package to be
-        // activated.
-        atom.commands.dispatch(workspaceElement, 'myscoop:scoop');
-        waitsForPromise(() => {
-          return activationPromise;
-        });
-
-        runs(() => {
-          // There exists sample_scoop.c
-          waitsFor(() => atom.workspace.getActivePaneItem().getTitle() === 'sample_scoop.c');
-          runs(() => {
-            expect(true).toBe(true);
-          });
-        });
+        // There exists test1_scoop.c
+        waitsFor(() =>
+          atom.workspace.getActivePaneItem().getPath() === __dirname + '/testcase/test1_scoop.c'
+        );
+        runs(() => { expect(true).toBe(true); });
       });
     });
 
