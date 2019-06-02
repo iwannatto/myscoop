@@ -61,7 +61,7 @@ describe('Main', () => {
         );
         runs(() => {
           let scoopEditor = atom.workspace.getActiveTextEditor();
-          expect(scoopEditor.lineTextForBufferRow(1)).toBe('  return 0;');
+          expect(scoopEditor.lineTextForBufferRow(1)).toBe('  int a = b;');
         });
       })
     });
