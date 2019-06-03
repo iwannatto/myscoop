@@ -21,6 +21,10 @@ describe('Detector', () => {
   });
 
   it('detects undefined variable', () => {
-    expect(detector.detect()).toEqual(['b']);
+    let detected = detector.detect();
+    let d = detected[0];
+    expect(d[0]).toBe('b');
+    expect(d[1][0]).toEqual([1, 10]);
+    expect(d[1][1]).toEqual([1, 11]);
   });
 });

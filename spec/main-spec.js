@@ -65,5 +65,25 @@ describe('Main', () => {
         });
       })
     });
+
+    it('detects undefined variable', () => {
+      expect(sourceEditor.getPath()).toBe(sourceFileName);
+      sourceEditor.setCursorBufferPosition([1, 0]);
+      atom.commands.dispatch(workspaceElement, 'myscoop:scoop');
+      waitsForPromise(() => {
+        return activationPromise;
+      });
+      runs(() => {
+        waitsFor(() =>
+          atom.workspace.getActivePaneItem().getPath() === scoopFileName
+        );
+        runs(() => {
+          let scoopEditor = atom.workspace.getActiveTextEditor();
+          expect(scoopEditor.lineTextForBufferRow(1)).toBe('  int a = b;');
+          atom.commands.dispatch(workspaceElement, 'myscoop:detect');
+          expect(scoopEditor.findMarkers({})).not.toEqual([]);
+        });
+      })
+    });
   });
 });
