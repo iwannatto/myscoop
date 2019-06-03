@@ -50,7 +50,7 @@ describe('Main', () => {
 
     it('copies selected line to scoop editor', () => {
       expect(sourceEditor.getPath()).toBe(sourceFileName);
-      sourceEditor.setCursorBufferPosition([1, 0]);
+      sourceEditor.setCursorBufferPosition([2, 0]);
       atom.commands.dispatch(workspaceElement, 'myscoop:scoop');
       waitsForPromise(() => {
         return activationPromise;
@@ -61,14 +61,14 @@ describe('Main', () => {
         );
         runs(() => {
           let scoopEditor = atom.workspace.getActiveTextEditor();
-          expect(scoopEditor.lineTextForBufferRow(1)).toBe('  int a = b;');
+          expect(scoopEditor.lineTextForBufferRow(1)).toBe('  int b = a;');
         });
       })
     });
 
     it('detects undefined variable', () => {
       expect(sourceEditor.getPath()).toBe(sourceFileName);
-      sourceEditor.setCursorBufferPosition([1, 0]);
+      sourceEditor.setCursorBufferPosition([2, 0]);
       atom.commands.dispatch(workspaceElement, 'myscoop:scoop');
       waitsForPromise(() => {
         return activationPromise;
@@ -79,7 +79,7 @@ describe('Main', () => {
         );
         runs(() => {
           let scoopEditor = atom.workspace.getActiveTextEditor();
-          expect(scoopEditor.lineTextForBufferRow(1)).toBe('  int a = b;');
+          expect(scoopEditor.lineTextForBufferRow(1)).toBe('  int b = a;');
           atom.commands.dispatch(workspaceElement, 'myscoop:detect');
           expect(scoopEditor.findMarkers({})).not.toEqual([]);
         });
