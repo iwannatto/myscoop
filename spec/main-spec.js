@@ -32,18 +32,18 @@ describe('Main', () => {
       }
     });
 
-    describe('select line 2, dispatch myscoop:scoop', () => {
+    describe('select specific line, dispatch myscoop:scoop', () => {
+      let selectedLine = 14;
       beforeEach(() => {
-        sourceEditor.setCursorBufferPosition([2, 0]);
+        sourceEditor.setCursorBufferPosition([selectedLine, 0]);
         atom.commands.dispatch(workspaceElement, 'myscoop:scoop');
         waitsForPromise(() => { return activationPromise; });
         waitsFor(() => atom.workspace.getActivePaneItem().getPath() === scoopFileName);
       });
 
-
       it('copies selected line to scoop editor', () => {
         let scoopEditor = atom.workspace.getActiveTextEditor();
-        expect(scoopEditor.lineTextForBufferRow(1)).toBe(sourceEditor.lineTextForBufferRow(2));
+        expect(scoopEditor.lineTextForBufferRow(1)).toBe(sourceEditor.lineTextForBufferRow(selectedLine));
       });
 
       describe('dispatch myscoop:detect', () => {
