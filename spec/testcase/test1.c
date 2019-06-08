@@ -1,3 +1,5 @@
+#include "database.h"
+
 int main() {
   int debug = 1;
 

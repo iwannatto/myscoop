@@ -33,7 +33,7 @@ describe('Main', () => {
     });
 
     describe('select specific line, dispatch myscoop:scoop', () => {
-      let selectedLine = 14;
+      let selectedLine = 16;
       beforeEach(() => {
         sourceEditor.setCursorBufferPosition([selectedLine, 0]);
         atom.commands.dispatch(workspaceElement, 'myscoop:scoop');
@@ -41,22 +41,21 @@ describe('Main', () => {
         waitsFor(() => atom.workspace.getActivePaneItem().getPath() === scoopFileName);
       });
 
+      it('copies above main', () => {
+        let scoopEditor = atom.workspace.getActiveTextEditor();
+        for (let i = 0; i < 2; ++i) {
+          expect(scoopEditor.lineTextForBufferRow(i)).toBe(sourceEditor.lineTextForBufferRow(i));
+        }
+      })
+
       it('copies selected line to scoop editor', () => {
         let scoopEditor = atom.workspace.getActiveTextEditor();
-        expect(scoopEditor.lineTextForBufferRow(1)).toBe(sourceEditor.lineTextForBufferRow(selectedLine));
+        expect(scoopEditor.lineTextForBufferRow(3)).toBe(sourceEditor.lineTextForBufferRow(selectedLine));
       });
 
-      describe('dispatch myscoop:detect', () => {
-        let scoopEditor;
-
-        beforeEach(() => {
-          scoopEditor = atom.workspace.getActiveTextEditor();
-          atom.commands.dispatch(workspaceElement, 'myscoop:detect');
-        });
-
-        it('marks undefined variable', () => {
-          expect(scoopEditor.findMarkers({})).not.toEqual([]);
-        });
+      it('marks undefined variable', () => {
+        let scoopEditor = atom.workspace.getActiveTextEditor();
+        expect(scoopEditor.findMarkers({})).not.toEqual([]);
       });
     });
   });
