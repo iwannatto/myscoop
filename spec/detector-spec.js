@@ -1,35 +1,32 @@
 'use babel';
 
-import Scoop from '../lib/scoop';
-import Detector from '../lib/detector';
+// import Scoop from '../lib/scoop';
+import {Flag, detect} from '../lib/detector';
 
-describe('Detector, open scoop1.c, detect', () => {
-  let workspaceElement, activationPromise, editor, scoop, detector;
-  let fileName = __dirname + '/testcase/scoop1.c';
+describe('Detector, open detector1.c', () => {
+  let fileName = __dirname + '/testcase/detector1.c';
+  let scoopEditor;
 
   beforeEach(() => {
-    workspaceElement = atom.views.getView(atom.workspace);
-    activationPromise = atom.packages.activatePackage('myscoop');
     waitsForPromise(() => {
-      return atom.workspace.open(fileName).then((e) => { editor = e; });
-    });
-    runs(() => {
-      scoop = new Scoop();
-      scoop.setEditor(null, editor);
-      detector = new Detector(scoop);
-      detected = detector.detect();
+      return atom.workspace.open(fileName).then((editor) => { scoopEditor = editor; });
     });
   });
 
-  it('detects undefined variable in intDecl righthand', () => {
-    let d = detected.find((e) => e[0] === 'a');
-    expect(d[1][0]).toEqual([1, 10]);
-    expect(d[1][1]).toEqual([1, 11]);
-  });
+  describe('detect', () => {
+    let flags
+    beforeEach(() => {
+      flags = detect(scoopEditor);
+    });
 
-  it('detects undefined variable in single funApp', () => {
-    let d = detected.find((e) => e[0] === 'cursor');
-    expect(d[1][0]).toEqual([2, 8]);
-    expect(d[1][1]).toEqual([2, 14]);
-  })
+    it('detects undefined variable in intDecl righthand', () => {
+      let flag = flags.find((f) => f.varName === 'b');
+      expect(flag.range).toEqual([[1, 10], [1, 11]]);
+    });
+
+    it('detects undefined variable in single funApp', () => {
+      let flag = flags.find((f) => f.varName === 'c');
+      expect(flag.range).toEqual([[2, 4], [2, 5]]);
+    });
+  });
 });
