@@ -47,6 +47,7 @@ describe('Main', () => {
             return false;
           }
         });
+        jasmine.attachToDOM(workspaceElement);
       });
 
       it('copies above main', () => {
@@ -61,14 +62,39 @@ describe('Main', () => {
 
       it('marks undefined variable', () => {
         expect(scoopEditor.findMarkers({})).not.toEqual([]);
-        jasmine.attachToDOM(workspaceElement);
         expect(workspaceElement.querySelector('.highlight')).not.toBeNull();
       });
 
       it('shows suggestion', () => {
-        jasmine.attachToDOM(workspaceElement);
         expect(workspaceElement.querySelector('.suggestion')).not.toBeNull();
-      })
+      });
+
+      describe('click', () => {
+        let suggestions, suggestion;
+        beforeEach(() => {
+          suggestions = workspaceElement.querySelector('.suggestion');
+          suggestion = suggestions.firstElementChild;
+          suggestion.click();
+        });
+
+        it('inserts declaration', () => {
+          expect(scoopEditor.lineTextForBufferRow(3)).toBe(sourceEditor.lineTextForBufferRow(12));
+        });
+        it('removes old suggestion', () => {
+          expect(workspaceElement.querySelector('.suggestion')).not.toEqual(suggestions);
+        });
+
+        describe('click new suggestion', () => {
+          beforeEach(() => {
+            suggestions = workspaceElement.querySelector('.suggestion');
+            suggestion = suggestions.firstElementChild;
+            suggestion.click();
+          });
+          it('inserts declaration', () => {
+            expect(scoopEditor.lineTextForBufferRow(3)).toBe(sourceEditor.lineTextForBufferRow(11));
+          });
+        })
+      });
     });
   });
 });
