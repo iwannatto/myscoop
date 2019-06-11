@@ -28,5 +28,10 @@ describe('Detector, open detector1.c', () => {
       let flag = flags.find((f) => f.varName === 'c');
       expect(flag.range).toEqual([[2, 4], [2, 5]]);
     });
+
+    it('detects undefined variable in rightHandFunApp', () => {
+      let flag = flags.find((f) => f.varName === 'e');
+      expect(flag.range).toEqual([[3, 12], [3, 13]]);
+    })
   });
 });
